@@ -1,0 +1,36 @@
+# Code Case 3
+import numpy as np
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Generating synthetic data for Probiotic Supplement Production
+np.random.seed(42)
+n_samples = 1000
+
+# Synthetic production data
+temperature = np.random.uniform(20, 40, n_samples)  # Celsius
+humidity = np.random.uniform(30, 70, n_samples)  # Percentage
+storage_duration = np.random.uniform(1, 12, n_samples)  # Months
+contamination_risk = np.random.uniform(0, 1, n_samples)
+
+# Viability score based on production parameters
+viability_score = (temperature - 25) * -0.5 + (humidity - 50) * -0.2 + storage_duration * -0.1 + np.random.normal(0, 5, n_samples)
+
+# Creating DataFrame
+df_probiotic = pd.DataFrame({
+    'Temperature': temperature,
+    'Humidity': humidity,
+    'StorageDuration': storage_duration,
+    'ContaminationRisk': contamination_risk,
+    'ViabilityScore': viability_score
+})
+
+# Visualization
+plt.figure(figsize=(14, 8))
+sns.scatterplot(x='Temperature', y='ViabilityScore', hue='StorageDuration', size='ContaminationRisk', sizes=(20, 200), data=df_probiotic, palette='viridis')
+plt.title('Viability Score of Probiotics by Temperature and Storage Duration')
+plt.xlabel('Temperature (Celsius)')
+plt.ylabel('Viability Score')
+plt.legend(title='Storage Duration (Months)')
+plt.show()
