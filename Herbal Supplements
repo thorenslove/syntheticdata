@@ -1,0 +1,47 @@
+# Code Case 2
+import numpy as np
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestRegressor
+
+# Generating synthetic data for Herbal Supplements
+np.random.seed(42)
+n_samples = 1000
+
+# Synthetic herb data
+herb1 = np.random.uniform(0, 100, n_samples)  # Concentration of Herb 1
+herb2 = np.random.uniform(0, 100, n_samples)  # Concentration of Herb 2
+herb3 = np.random.uniform(0, 100, n_samples)  # Concentration of Herb 3
+bioactivity_score = herb1 * 0.3 + herb2 * 0.5 + herb3 * 0.2 + np.random.normal(0, 5, n_samples)  # Arbitrary formula
+
+# Creating DataFrame
+df_herb = pd.DataFrame({
+    'Herb1': herb1,
+    'Herb2': herb2,
+    'Herb3': herb3,
+    'BioactivityScore': bioactivity_score
+})
+
+# Splitting data for training and testing
+X = df_herb[['Herb1', 'Herb2', 'Herb3']]
+y = df_herb['BioactivityScore']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Training a machine learning model
+model = RandomForestRegressor(n_estimators=100, random_state=42)
+model.fit(X_train, y_train)
+
+# Predicting and evaluating
+predictions = model.predict(X_test)
+results = pd.DataFrame({'Actual': y_test, 'Predicted': predictions})
+
+# Visualization
+plt.figure(figsize=(14, 8))
+sns.scatterplot(x='Actual', y='Predicted', data=results, alpha=0.7)
+plt.plot([results.min().min(), results.max().max()], [results.min().min(), results.max().max()], 'r--')
+plt.title('Actual vs Predicted Bioactivity Scores of Herbal Supplements')
+plt.xlabel('Actual Bioactivity Score')
+plt.ylabel('Predicted Bioactivity Score')
+plt.show()
