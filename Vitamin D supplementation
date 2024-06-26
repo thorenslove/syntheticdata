@@ -1,0 +1,40 @@
+Code Case 1
+import numpy as np
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Generating synthetic data for Vitamin D supplementation
+np.random.seed(42)
+n_samples = 1000
+
+# Synthetic population data
+age = np.random.randint(20, 80, n_samples)
+gender = np.random.choice(['Male', 'Female'], n_samples)
+geographic_location = np.random.choice(['North', 'South', 'East', 'West'], n_samples)
+baseline_vitamin_d = np.random.uniform(10, 50, n_samples)  # ng/mL
+
+# Synthetic supplementation data
+dosage = np.random.choice([1000, 2000, 3000, 4000], n_samples)  # IU
+supplement_form = np.random.choice(['Pill', 'Liquid'], n_samples)
+response = baseline_vitamin_d + (dosage / 1000) * np.random.uniform(1, 5, n_samples)
+
+# Creating DataFrame
+df_vitamin_d = pd.DataFrame({
+    'Age': age,
+    'Gender': gender,
+    'GeographicLocation': geographic_location,
+    'BaselineVitaminD': baseline_vitamin_d,
+    'Dosage': dosage,
+    'SupplementForm': supplement_form,
+    'Response': response
+})
+
+# Visualization
+plt.figure(figsize=(14, 8))
+sns.boxplot(x='Dosage', y='Response', hue='Gender', data=df_vitamin_d)
+plt.title('Response to Vitamin D Supplementation by Dosage and Gender')
+plt.xlabel('Dosage (IU)')
+plt.ylabel('Response (ng/mL)')
+plt.legend(title='Gender')
+plt.show()
